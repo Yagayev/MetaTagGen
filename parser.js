@@ -1,5 +1,6 @@
 
-
+//params: a string that contains "&<number>" in it
+//return: array of strings and numbers; everey "&<number>" is the number in the array, and the rest goes to strings between them 
 function parser(str)
 {
     let re = /((\$\d)|([^\$\d]*))/g;

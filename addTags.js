@@ -1,4 +1,16 @@
+import * as parser from "parser.js";
+import * as tagger from "tagger.js";
 
 
-console.log(addtags(["orange", "octopus"], ["$0 is the new $1", "the $0 $1"] ))
+
+function addtags(words, str)
+{
+    let arr = parser.parser(str);
+    let ans = tagger.tagger(words, arr);
+    ans = ans.replace("\n",", ");
+    return ans;
+
+}
+addtags2(123, "hello");
+console.log(addtags(["orange", "octopus"], "$1 is the new $1\nthe $1 $1" ))
 //expected: "octopus is the new orange, the orange octopus"

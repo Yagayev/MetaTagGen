@@ -21,7 +21,7 @@ function parser(str)
 
 }
 
-// let str = "$0 is the new $1\n the $0 $1"
+// let str = "$1 is the new $1\n the $1 $1"
 // let arr = parser(str);
 // console.log(arr);
 

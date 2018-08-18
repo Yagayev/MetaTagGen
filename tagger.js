@@ -1,7 +1,8 @@
 
 //params: words - string array; tamplates - array of strings and numbers
 //return: one string, all the strings in teplates, where every number x in templates is replaced by 
-function tagger(words, tamplates){
+function tagger(words, tamplates)
+{
     ans = "";
     for(i in tamplates){
         let t = tamplates[i];

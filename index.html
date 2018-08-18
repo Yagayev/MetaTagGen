@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Meta Tag Generator</title>
+</head>
+<body>
+    <div class="container">
+        <h1 class = "display-5 text-center">Meta Tag Generator</h1>
+        <form>
+            <div class="form-group">
+
+                <textarea class="form-control form-control-lg"
+                    type="text"
+                    id="keywordsInput"
+                    rows="3"
+                    placeholder="Enter base keywords: &#10;Sirius &#10;Black"></textarea>
+            </div>
+        </form>
+        <form>
+            <div class="form-group">
+                <textarea class="form-control form-control-lg"
+                    type="text"
+                    id="phasesInput"
+                    rows="10"
+                    placeholder="Enter base Phrases, seperated with new lines: &quot;$1 is the new $2&quot; will result in &quot;Sirius is the new Black&quot;"></textarea>
+            </div>
+        </form>
+        <div>
+            <div class="card">
+                <div class="card-block">
+                    <h6>Meta Tags:</h6>
+                    <div id="output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        //params: a string that contains "&<number>" in it
+        //return: array of strings and numbers; everey "&<number>" is the number in the array, and the rest goes to strings between them 
+        function parser(str)
+        {
+            let re = /((\$\d)|([^\$\d]*))/g;
+            let arr = str.match(re);
+            var ans = [];
+
+            for(i in arr){
+                if(arr[i].charAt(0)=='$'){
+                    ans[i]=parseInt(arr[i].substring(1,), 10)-1;
+                }
+                else{
+                    ans[i]=arr[i];
+                }
+
+            }
+
+            return ans;
+
+        }
+
+
+        //params: words - string array; tamplates - array of strings and numbers
+        //return: one string, all the strings in teplates, where every number x in templates is replaced by 
+        function tagger(words, tamplates)
+        {
+            ans = "";
+            for(i in tamplates){
+                let t = tamplates[i];
+                if(typeof(t)=="number"&&t<words.length){
+                    ans = ans + words[t];
+                }
+                else if(typeof(t)!="number"){
+                    ans = ans + t;
+                }
+            }
+
+            return ans;
+        }
+        function stringToArr(str){
+            return str.split(/,|\n/g);
+        }
+
+        function addtags(wordsInput, str)
+        {
+            let arr = parser(str);
+            let words = stringToArr(wordsInput);
+            let ans = tagger(words, arr);
+            ans = ans.replace(/[\n\r]/g,", ");
+            return ans;
+        }
+        var words = "";
+        var phases = "";
+        document.getElementById('keywordsInput').addEventListener("input", function(e){
+            words=e.target.value;
+            document.getElementById("output").innerHTML = addtags(words, phases);
+        });
+        document.getElementById('phasesInput').addEventListener("input", function(e){
+            phases=e.target.value;
+            document.getElementById("output").innerHTML = addtags(words, phases);
+        });
+    
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+</body>
+</html>
